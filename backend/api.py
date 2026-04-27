@@ -1,5 +1,6 @@
 # backend\api.py
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import datetime
@@ -16,6 +17,13 @@ from backend.modules.booking.payment_service import create_checkout_session
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # later you can restrict to your domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class BookingRequest(BaseModel):
     slot: str
