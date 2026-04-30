@@ -26,8 +26,8 @@ def create_checkout_session(amount, metadata):
             "quantity": 1,
         }],
         mode="payment",
-        success_url="https://yourdomain.com/success",
-        cancel_url="https://yourdomain.com/cancel",
+        success_url="https://rikkijprince.github.io/booking-success/",
+        cancel_url="https://rikkijprince.github.io/book_classes/",
         metadata=metadata,
     )
 
