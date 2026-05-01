@@ -4,9 +4,8 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import os.path
 
-from google.oauth2.credentials import Credentials
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 # =========================
 # CONFIGURATION
