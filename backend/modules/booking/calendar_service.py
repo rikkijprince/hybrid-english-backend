@@ -11,6 +11,8 @@ from googleapiclient.discovery import build
 # CONFIGURATION
 # =========================
 
+SERVICE_ACCOUNT_FILE = "service-account.json"
+
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 # Calendars to check for conflicts
@@ -37,21 +39,16 @@ DAYS_AHEAD = 7
 # =========================
 
 def get_calendar_service():
-    creds = None
+    credentials = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE,
+        scopes=SCOPES
+    )
 
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-
-    if not creds or not creds.valid:
-        flow = InstalledAppFlow.from_client_secrets_file(
-            'credentials.json', SCOPES
-        )
-        creds = flow.run_local_server(port=0)
-
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
-
-    return build('calendar', 'v3', credentials=creds)
+    return build(
+        "calendar",
+        "v3",
+        credentials=credentials
+    )
 
 
 # =========================
