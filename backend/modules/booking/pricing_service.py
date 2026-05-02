@@ -1,5 +1,6 @@
 # hybrid-english-backend/backend/modules/booking/pricing_service.py
 import json
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[3]
