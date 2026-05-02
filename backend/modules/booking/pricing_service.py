@@ -1,8 +1,9 @@
 # hybrid-english-backend/backend/modules/booking/pricing_service.py
 import json
-import os
+from pathlib import Path
 
-FEE_FILE = os.path.join(os.path.dirname(__file__), "fee.json")
+BASE_DIR = Path(__file__).resolve().parents[3]
+FEE_FILE = BASE_DIR / "fee.json"
 
 
 def read_fee_file():
@@ -16,7 +17,7 @@ def read_fee_file():
         }
 
     try:
-        with open(FEE_FILE, "r") as f:
+        with open(FEE_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
             print("✅ fee.json loaded:", data)
             return data
