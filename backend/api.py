@@ -5,7 +5,7 @@ from datetime import datetime
 import stripe
 import os
 
-from modules.booking.calendar_service import (
+from backend/modules.booking.calendar_service import (
     get_available_slots,
     create_tentative_event,
     confirm_event,
@@ -13,8 +13,8 @@ from modules.booking.calendar_service import (
     is_slot_still_available
 )
 
-from modules.booking.pricing_service import get_pricing
-from modules.booking.payment_service import create_checkout_session
+from backend/modules.booking.pricing_service import get_pricing
+from backend/modules.booking.payment_service import create_checkout_session
 
 app = FastAPI()
 
