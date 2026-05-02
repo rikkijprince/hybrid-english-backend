@@ -16,7 +16,7 @@ BASE_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../../../")
 )
 
-SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service-account.json")
+SERVICE_ACCOUNT_FILE = "/etc/secrets/service-account.json"
 
 print("Resolved path:", SERVICE_ACCOUNT_FILE)              #for debuuging
 print("Exists:", os.path.exists(SERVICE_ACCOUNT_FILE))     #for debuuging
