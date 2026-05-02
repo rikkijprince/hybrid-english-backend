@@ -3,7 +3,6 @@
 import os
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
-import os.path
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -12,18 +11,11 @@ from googleapiclient.discovery import build
 # CONFIGURATION
 # =========================
 
-BASE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../../")
-)
-
-SERVICE_ACCOUNT_FILE = "/etc/secrets/service-account.json"
-
 print("Resolved path:", SERVICE_ACCOUNT_FILE)              #for debuuging
 print("Exists:", os.path.exists(SERVICE_ACCOUNT_FILE))     #for debuuging
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-# Calendars to check for conflicts
 CALENDAR_IDS = [
     "rjpbusiness@gmail.com",  # booking calendar
     "rjpxpr@gmail.com"        # personal calendar
@@ -47,8 +39,20 @@ DAYS_AHEAD = 7
 # =========================
 
 def get_calendar_service():
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE,
+    """
+    Uses service account JSON stored in Render environment variable:
+    GOOGLE_SERVICE_ACCOUNT_JSON
+    """
+
+    creds_json = os.getenv("service-account.json")
+
+    if not creds_json:
+        raise Exception("Missing GOOGLE_SERVICE_ACCOUNT_JSON env variable")
+
+    creds_info = json.loads(creds_json)
+
+    credentials = service_account.Credentials.from_service_account_info(
+        creds_info,
         scopes=SCOPES
     )
 
