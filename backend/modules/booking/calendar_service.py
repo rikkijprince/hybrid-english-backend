@@ -82,52 +82,75 @@ def get_busy_times(service, time_min, time_max):
 # =========================
 
 def get_available_slots():
-    service = get_calendar_service()
+    try:
+        print("=== SLOT GENERATION START ===")
 
-    now = datetime.now(TIMEZONE)
-    MIN_NOTICE_HOURS = 12
-    cutoff = now + timedelta(hours=MIN_NOTICE_HOURS)
-    end_window = now + timedelta(days=DAYS_AHEAD)
+        # 🔍 Debug: confirm credentials file path
+        print("SERVICE_ACCOUNT_FILE:", SERVICE_ACCOUNT_FILE)
+        print("FILE EXISTS:", os.path.exists(SERVICE_ACCOUNT_FILE))
 
-    busy_times = get_busy_times(service, now, end_window)
+        service = get_calendar_service()
+        print("Calendar service initialized")
 
-    slots = []
-    current_day = now
+        now = datetime.now(TIMEZONE)
+        MIN_NOTICE_HOURS = 12
+        cutoff = now + timedelta(hours=MIN_NOTICE_HOURS)
+        end_window = now + timedelta(days=DAYS_AHEAD)
 
-    while current_day < end_window:
+        print("Now:", now)
+        print("Cutoff:", cutoff)
+        print("End window:", end_window)
 
-        day_start = current_day.replace(
-            hour=WORK_START_HOUR, minute=0, second=0, microsecond=0
-        )
+        busy_times = get_busy_times(service, now, end_window)
+        print(f"Busy times fetched: {len(busy_times)} entries")
 
-        day_end = current_day.replace(
-            hour=WORK_END_HOUR, minute=0, second=0, microsecond=0
-        )
+        slots = []
+        current_day = now
 
-        current_slot = day_start
+        while current_day < end_window:
 
-        while current_slot + timedelta(minutes=SLOT_DURATION) <= day_end:
-
-            slot_end = current_slot + timedelta(minutes=SLOT_DURATION)
-
-            # Check overlap
-            overlap = False
-            for busy_start, busy_end in busy_times:
-                if not (slot_end <= busy_start or current_slot >= busy_end):
-                    overlap = True
-                    break
-
-            if not overlap and current_slot > cutoff:
-                slots.append(current_slot)
-
-            current_slot += timedelta(
-                minutes=SLOT_DURATION + BUFFER_MINUTES
+            day_start = current_day.replace(
+                hour=WORK_START_HOUR, minute=0, second=0, microsecond=0
             )
 
-        current_day += timedelta(days=1)
+            day_end = current_day.replace(
+                hour=WORK_END_HOUR, minute=0, second=0, microsecond=0
+            )
 
-    return slots
+            current_slot = day_start
 
+            while current_slot + timedelta(minutes=SLOT_DURATION) <= day_end:
+
+                slot_end = current_slot + timedelta(minutes=SLOT_DURATION)
+
+                # Check overlap
+                overlap = False
+                for busy_start, busy_end in busy_times:
+                    if not (slot_end <= busy_start or current_slot >= busy_end):
+                        overlap = True
+                        break
+
+                if not overlap and current_slot > cutoff:
+                    slots.append(current_slot)
+
+                current_slot += timedelta(
+                    minutes=SLOT_DURATION + BUFFER_MINUTES
+                )
+
+            current_day += timedelta(days=1)
+
+        print(f"Generated slots: {len(slots)}")
+        print("=== SLOT GENERATION END ===")
+
+        return slots
+
+    except Exception as e:
+        print("❌ SLOT GENERATION ERROR:", str(e))
+        import traceback
+        traceback.print_exc()
+
+        # Fail gracefully so frontend still works
+        return []
 
 # =========================
 # FORMAT FOR DISPLAY
