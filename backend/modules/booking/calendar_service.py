@@ -11,7 +11,8 @@ from googleapiclient.discovery import build
 # CONFIGURATION
 # =========================
 
-SERVICE_ACCOUNT_FILE = "service-account.json"
+BASE_DIR = os.path.dirname(__file__)
+SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service-account.json")
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
