@@ -1,5 +1,6 @@
 # backend/modules/booking/calendar_service.py
 
+import os
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import os.path
@@ -12,7 +13,12 @@ from googleapiclient.discovery import build
 # =========================
 
 BASE_DIR = os.path.dirname(__file__)
-SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service-account.json")
+import os
+
+SERVICE_ACCOUNT_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "service-account.json"
+)
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
