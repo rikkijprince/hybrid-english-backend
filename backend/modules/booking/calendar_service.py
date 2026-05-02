@@ -44,7 +44,7 @@ def get_calendar_service():
     GOOGLE_SERVICE_ACCOUNT_JSON
     """
 
-    creds_json = os.getenv("service-account.json")
+    creds_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
 
     if not creds_json:
         raise Exception("Missing GOOGLE_SERVICE_ACCOUNT_JSON env variable")
