@@ -11,10 +11,6 @@ from googleapiclient.discovery import build
 # CONFIGURATION
 # =========================
 
-print("ENV VAR FOUND:", bool(creds_json))                  #for debugging
-print("CREDS KEYS:", list(creds_info.keys()))              #for debugging
-print("CLIENT EMAIL:", creds_info.get("client_email"))     #for debugging
-
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 CALENDAR_IDS = [
@@ -51,6 +47,9 @@ def get_calendar_service():
         raise Exception("Missing GOOGLE_SERVICE_ACCOUNT_JSON env variable")
 
     creds_info = json.loads(creds_json)
+
+        print("CREDS KEYS:", list(creds_info.keys()))              #for debugging
+    print("CLIENT EMAIL:", creds_info.get("client_email"))     #for debugging
 
     credentials = service_account.Credentials.from_service_account_info(
         creds_info,
