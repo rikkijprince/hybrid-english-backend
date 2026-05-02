@@ -13,6 +13,9 @@ from googleapiclient.discovery import build
 
 print("Resolved path:", SERVICE_ACCOUNT_FILE)              #for debuuging
 print("Exists:", os.path.exists(SERVICE_ACCOUNT_FILE))     #for debuuging
+print("ENV VAR FOUND:", bool(creds_json))                  #for debuuging
+print("CREDS KEYS:", list(creds_info.keys()))              #for debuuging
+print("CLIENT EMAIL:", creds_info.get("client_email"))     #for debuuging
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
