@@ -12,13 +12,14 @@ from googleapiclient.discovery import build
 # CONFIGURATION
 # =========================
 
-BASE_DIR = os.path.dirname(__file__)
-import os
-
-SERVICE_ACCOUNT_FILE = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-    "service-account.json"
+BASE_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../../")
 )
+
+SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service-account.json")
+
+print("Resolved path:", SERVICE_ACCOUNT_FILE)              #for debuuging
+print("Exists:", os.path.exists(SERVICE_ACCOUNT_FILE))     #for debuuging
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
